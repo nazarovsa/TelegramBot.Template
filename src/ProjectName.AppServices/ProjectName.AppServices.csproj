@@ -1,0 +1,11 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <ItemGroup>
+        <PackageReference Include="FormatWith" />
+        <PackageReference Include="Insight.Localizer" />
+        <PackageReference Include="Insight.TelegramBot" />
+        <PackageReference Include="Insight.TelegramBot.Handling" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" />
+    </ItemGroup>
+</Project>

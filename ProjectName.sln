@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{9CF552C7-A0FB-4C13-A156-8A9EA6C85EC1}"
+	ProjectSection(SolutionItems) = preProject
+		Directory.Build.props = Directory.Build.props
+		Directory.Packages.props = Directory.Packages.props
+		.gitignore = .gitignore
+		README.md = README.md
+		docker-compose.local.yml = docker-compose.local.yml
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectName.AppServices", "src\ProjectName.AppServices\ProjectName.AppServices.csproj", "{5CCB085C-860A-4C4C-907C-10183ABCEA9B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProjectName.Host", "src\ProjectName.Host\ProjectName.Host.csproj", "{58D5C9FD-75A9-4FFB-9FBD-BE8E9FCE3016}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{5CCB085C-860A-4C4C-907C-10183ABCEA9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5CCB085C-860A-4C4C-907C-10183ABCEA9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5CCB085C-860A-4C4C-907C-10183ABCEA9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5CCB085C-860A-4C4C-907C-10183ABCEA9B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{58D5C9FD-75A9-4FFB-9FBD-BE8E9FCE3016}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{58D5C9FD-75A9-4FFB-9FBD-BE8E9FCE3016}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{58D5C9FD-75A9-4FFB-9FBD-BE8E9FCE3016}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{58D5C9FD-75A9-4FFB-9FBD-BE8E9FCE3016}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

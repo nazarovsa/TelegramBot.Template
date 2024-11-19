@@ -1,0 +1,10 @@
+version: "3.8"
+services:
+  telegram-bot-host:
+    build:
+      context: .
+      dockerfile: ./src/ProjectName.Host/Dockerfile
+    container_name: telegram-bot-host
+    environment:
+      ASPNETCORE_ENVIRONMENT: DockerCompose
+    restart: on-failure
