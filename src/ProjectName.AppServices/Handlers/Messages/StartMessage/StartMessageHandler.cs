@@ -5,7 +5,7 @@ using Insight.TelegramBot.Models;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 
-namespace ProjectName.AppServices.Telegram.Handlers.Messages.StartMessage;
+namespace ProjectName.AppServices.Handlers.Messages.StartMessage;
 
 public class StartMessageHandler : IMatchingUpdateHandler<StartMessageMatcher>
 {

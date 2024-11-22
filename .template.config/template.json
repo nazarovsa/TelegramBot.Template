@@ -17,6 +17,16 @@
       "isRequired": true,
       "replaces": "ProjectName",
       "fileRename": "ProjectName"
+    },
+    "projectNameInKebab": {
+      "type": "parameter",
+      "isRequired": true,
+      "replaces": "ProjectNameInKebab"
+    },
+    "telegramBotToken": {
+      "type": "paramater",
+      "isRequired": false,
+      "replaces": "TelegramBotToken"
     }
   }
 }

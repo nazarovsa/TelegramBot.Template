@@ -1,7 +1,7 @@
 using Insight.TelegramBot.Handling.Handlers;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using ProjectName.AppServices.Telegram.Handlers;
+using ProjectName.AppServices.Handlers;
 
 namespace ProjectName.AppServices;
 

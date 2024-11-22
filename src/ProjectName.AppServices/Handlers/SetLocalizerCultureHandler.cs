@@ -2,7 +2,7 @@ using Insight.Localizer;
 using Insight.TelegramBot.Handling.Handlers;
 using Telegram.Bot.Types;
 
-namespace ProjectName.AppServices.Telegram.Handlers;
+namespace ProjectName.AppServices.Handlers;
 
 public sealed class SetLocalizerCultureHandler : IUpdateHandler
 {

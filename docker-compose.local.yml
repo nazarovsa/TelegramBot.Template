@@ -1,10 +1,35 @@
 version: "3.8"
 services:
-  telegram-bot-host:
+  ProjectNameInKebab-host:
     build:
       context: .
       dockerfile: ./src/ProjectName.Host/Dockerfile
-    container_name: telegram-bot-host
+    container_name: ProjectNameInKebab-host
     environment:
       ASPNETCORE_ENVIRONMENT: DockerCompose
     restart: on-failure
+  
+  ProjectNameInKebab-migrator:
+    build:
+      context: .
+      dockerfile: ./src/ProjectName.Persistence/Dockerfile
+    container_name: ProjectNameInKebab-migrator
+    environment:
+      DOTNET_ENVIRONMENT: DockerCompose
+    depends_on:
+      ProjectNameInKebab-db:
+        condition: service_healthy
+
+  ProjectNameInKebab-db:
+    container_name: ProjectNameInKebab-db
+    image: mariadb:latest
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      MARIADB_ROOT_PASSWORD: toor
+      MARIADB_DATABASE: ProjectNameInKebab
+    healthcheck:
+      test: [ "CMD", "healthcheck.sh", "--connect", "--innodb_initialized" ]
+      interval: 5s
+      timeout: 10s 

@@ -4,7 +4,9 @@ using Insight.TelegramBot.DependencyInjection.Polling;
 using Insight.TelegramBot.Handling.Infrastructure;
 using Insight.TelegramBot.Polling.ExceptionHandlers;
 using ProjectName.AppServices;
-using ProjectName.AppServices.Telegram.Handlers.Messages.StartMessage;
+using ProjectName.AppServices.Handlers.Messages.StartMessage;
+using ProjectName.Persistence;
+using ProjectName.Persistence.Infrastructure;
 
 namespace ProjectName.Host.Infrastructure;
 
@@ -26,6 +28,7 @@ public class Startup
         services.AddSingleton<ILocalizer, Localizer>();
         
         services.AddAppServices(Configuration);
+        services.AddEfPersistence(Configuration.GetConnectionString(nameof(ProjectNameDbContext))!);
         
         services.AddSingleton(TimeProvider.System);
         services.AddTelegramBot(bot =>
