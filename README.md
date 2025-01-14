@@ -1,41 +1,58 @@
 # Telegram Bot Template
 
-A .NET template for quickly bootstrapping Telegram bots using the [Insight.TelegramBot](https://www.nuget.org/packages/Insight.TelegramBot/) framework.
+A production-ready .NET template for building scalable Telegram bots using clean architecture principles and modern development practices.
 
 ## Features
 
-- Production-ready project structure
-- Multi-language support (en-US, ru-RU)
-- Docker support
-- Structured logging with Serilog
-- Message handling infrastructure
-- State machine support for complex flows
+- **Clean Architecture**: Organized in domain-centric layers (Domain, Application, Infrastructure, Host)
+- **State Management**: Built-in support for user state tracking and complex conversation flows
+- **Multi-language Support**: Integrated localization system with en-US and ru-RU out of the box
+- **Database Integration**: Configured Entity Framework Core with MariaDB support
+- **Docker Support**: Ready-to-use Docker and docker-compose configurations
+- **Logging**: Structured logging with Serilog, including file and console outputs
+- **Dependency Injection**: Well-organized DI setup with Microsoft.Extensions.DependencyInjection
+- **Configuration Management**: Environment-based settings with protection of sensitive data
+- **Testing Ready**: Project structure supports unit and integration testing
+- **Error Handling**: Global exception handling and logging setup
 
-## Prerequisites
+## Getting Started
+
+### Prerequisites
 
 - .NET 8.0 SDK
-- Docker (optional)
+- Docker and Docker Compose (optional)
+- MariaDB (if running locally)
 
-## Installation
+### Installation
 
-Install the template from NuGet:
+1. Install the template from NuGet:
 
 ```bash
 dotnet new install TelegramBot.Template
 ```
 
-## Usage 
-
-Create a new bot project:
+2. Create a new bot project:
 
 ```bash
-dotnet new telegram-bot-template -n YourBotName
+dotnet new telegram-bot-template \
+    --projectName "YourBotName" \
+    --projectNameInKebab "your-bot-name" \
+    --dbName "your_database_name" \
+    --telegramBotToken "YOUR_BOT_TOKEN" # Optional
 ```
 
-Configure your bot token:
+Parameters:
+- `--projectName`: Required. The name of your project (e.g., "MyAwesomeBot")
+- `--projectNameInKebab`: Required. Kebab-case version of your project name for Docker services (e.g., "my-awesome-bot")
+- `--dbName`: Required. Database name for MariaDB
+- `--telegramBotToken`: Optional. Your Telegram bot token. If not provided, you'll need to set it in appsettings.protected.json
 
-1. Open `src/YourBotName.Host/appsettings.protected.json`
-2. Set your Telegram bot token:
+### Configuration
+
+1. Set up your Telegram bot token:
+   - Open `src/YourBotName.Host/appsettings.protected.json`
+   - Replace `TelegramBotToken` with your actual bot token for local development:
+
 ```json
 {
   "TelegramBotOptions": {
@@ -44,59 +61,135 @@ Configure your bot token:
 }
 ```
 
-## Project Structure
+2. Configure database connection (if needed):
+   - Update connection strings in `appsettings.json` files for your environment
 
-- `YourBotName.AppServices/` - Business logic and message handlers
-  - `Telegram/` - Bot-specific code
-    - `Handlers/` - Message and callback handlers
-- `YourBotName.Host/` - Application host and configuration
-  - `Resources/` - Localization files
-  - `Infrastructure/` - Application bootstrapping
+### Running the Bot
 
-## Running the Bot
-
-### Local Development
+#### Local Development
 
 ```bash
 cd src/YourBotName.Host
 dotnet run
 ```
 
-### Docker
+#### Docker
 
 ```bash
 docker-compose -f docker-compose.local.yml up -d
 ```
 
-## Adding New Commands
+## Project Structure
 
-1. Create a new handler class in `AppServices/Telegram/Handlers/Messages`
-2. Implement `IMatchingUpdateHandler<T>` interface
+```
+├── src/
+│   ├── YourBotName.Domain/           # Domain entities and interfaces
+│   ├── YourBotName.AppServices/      # Application logic and handlers
+│   │   ├── UseCases/                 # Bot command implementations
+│   │   └── Handlers/                 # Message and callback handlers
+│   ├── YourBotName.Persistence/      # Database context and repositories
+│   └── YourBotName.Host/             # Application host and configuration
+│       └── Resources/                # Localization files
+```
+
+## Adding New Features
+
+### Creating a New Command
+
+1. Define the command state in `BotState.cs`:
+
+```csharp
+public enum BotState
+{
+    // Existing states...
+    YourNewCommand
+}
+```
+
+2. Create a new handler in `AppServices/UseCases`:
+
+```csharp
+public class YourNewCommandHandler : ContextHandlerBase, IMatchingUpdateHandler<YourNewCommandMatcher>
+{
+    public async Task Handle(Update update, CancellationToken cancellationToken = default)
+    {
+        await SetUserContext(update.Message.From.Id, cancellationToken);
+        // Your command logic here
+    }
+}
+```
+
 3. Add localization resources in `Host/Resources/Handlers`
-4. Register in `ServiceCollectionExtensions.cs` if needed
 
-## State Management
+### Adding New User States
 
-The template includes basic state management for multi-step flows:
+1. Update `UserState.cs`:
 
-1. Define states in `ExampleState.cs`
-2. Use `CallbackData<T>` for state transitions
-3. Implement handlers for each state
+```csharp
+public enum UserState
+{
+    None = 1,
+    YourNewState
+}
+```
+
+2. Implement state transition logic in your handlers using `UpdateState()`.
 
 ## Localization
 
 Add translations in:
 - `Resources/Buttons/` - Button texts
-- `Resources/Handlers/` - Handler-specific messages
+- `Resources/Handlers/` - Handler messages
 
-## Logging
+Example localization JSON:
 
-Configured with Serilog:
-- Console output for development
-- File logging for production
-- Structured log format
-- Configurable log levels per namespace
+```json
+{
+  "CommandName": {
+    "ButtonText": "Click me",
+    "ResponseMessage": "Hello, {UserName}!"
+  }
+}
+```
+
+## Database Migrations
+
+Create a new migration:
+
+```bash
+cd src/YourBotName.Persistence
+./AddMigration.sh "YourMigrationName"
+```
+
+Apply migrations:
+- Local: Migrations apply automatically on startup
+- Docker: Migrations run in a separate container before the main application
+
+## Contributing
+
+1. Fork the repository
+2. Create a feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a Pull Request
+
+## Built With
+
+- [Insight.TelegramBot](https://www.nuget.org/packages/Insight.TelegramBot/) - Telegram Bot framework
+- [Entity Framework Core](https://docs.microsoft.com/ef/core/) - Data access and ORM
+- [Serilog](https://serilog.net/) - Structured logging
+- [MariaDB](https://mariadb.org/) - Database
 
 ## License
 
-MIT
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+## Acknowledgments
+
+- Telegram Bot API
+- .NET Community
+- Contributors and users of this template
+
+## Support
+
+If you find a bug or have a feature request, please create an issue in the GitHub repository.

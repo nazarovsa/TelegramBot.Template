@@ -12,4 +12,8 @@ public class BotData : CallbackData<BotState>
     {
         return new BotData(BotState.Start);
     }
+
+    public static implicit operator string(BotData botData) => botData.ToString();
+    
+    public static explicit operator BotData(string str) => (BotData)Parse(str);
 }

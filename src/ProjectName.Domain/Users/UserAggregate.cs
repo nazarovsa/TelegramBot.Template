@@ -1,44 +1,91 @@
-﻿namespace ProjectName.Domain.Users
+﻿namespace ProjectName.Domain.Users;
+
+public  class UserAggregate
 {
-    public sealed class UserAggregate
+    private readonly Dictionary<string, string> _stateData = new(StringComparer.OrdinalIgnoreCase);
+    public long Id { get; private set; }
+    public string FirstName { get; private set; }
+    public string? Username { get; private set; }
+    public UserState State { get; private set; }
+    public string Culture { get; private set; } = "en";
+    public DateTimeOffset LastActivityAt { get; private set; }
+    public IReadOnlyDictionary<string, string> StateData => _stateData;
+
+    public DateTimeOffset UpdatedAt { get; private set; }
+    public DateTimeOffset CreatedAt { get; private set; }
+
+
+    public static UserAggregate Initialize(long id, string firstName, DateTimeOffset utcNow, string culture,
+        string? username = null)
     {
-        public long Id { get; private set; }
-        public string FirstName { get; private set; }
-        public string? Username { get; private set; }
+        ArgumentException.ThrowIfNullOrWhiteSpace(culture);
 
-        public DateTimeOffset LastActivityAt { get; private set; }
-
-        public DateTimeOffset UpdatedAt { get; private set; }
-        public DateTimeOffset CreatedAt { get; private set; }
-
-
-        public static UserAggregate Initialize(long id, string firstName, DateTimeOffset utcNow,
-            string? username = null)
+        return new UserAggregate
         {
-            return new UserAggregate
-            {
-                Id = id,
-                Username = username,
-                FirstName = firstName,
-                LastActivityAt = utcNow,
-                UpdatedAt = utcNow,
-                CreatedAt = utcNow,
-            };
+            Id = id,
+            Username = username,
+            FirstName = firstName,
+            LastActivityAt = utcNow,
+            State = UserState.None,
+            Culture = culture,
+            UpdatedAt = utcNow,
+            CreatedAt = utcNow,
+        };
+    }
+
+    public void Update(string firstName, DateTimeOffset utcNow, string? username = null)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(firstName);
+
+        FirstName = firstName;
+        Username = username;
+        UpdatedAt = utcNow;
+    }
+
+    public void UpdateState(UserState state, DateTimeOffset utcNow)
+    {
+        if (state == UserState.None)
+        {
+            _stateData.Clear();
         }
 
-        public void Update(string firstName, DateTimeOffset utcNow, string? username = null)
-        {
-            ArgumentException.ThrowIfNullOrEmpty(firstName);
+        State = state;
+        UpdatedAt = utcNow;
+    }
 
-            FirstName = firstName;
-            Username = username;
-            UpdatedAt = utcNow;
+    public void UpdateLastActivityAt(DateTimeOffset utcNow)
+    {
+        LastActivityAt = utcNow;
+        UpdatedAt = utcNow;
+    }
+
+
+    public void UpdateCulture(string culture, DateTimeOffset utcNow)
+    {
+        ArgumentException.ThrowIfNullOrEmpty(culture);
+
+        Culture = culture;
+        UpdatedAt = utcNow;
+    }
+    
+    public bool TryRemoveStateDataKey(string key)
+    {
+        return _stateData.Remove(key);
+    }
+
+    public bool TrySetStateDataKey(string key, string value)
+    {
+        if (string.IsNullOrWhiteSpace(key))
+        {
+            return false;
         }
 
-        public void UpdateLastActivityAt(DateTimeOffset utcNow)
-        {
-            LastActivityAt = utcNow;
-            UpdatedAt = utcNow;
-        }
+        _stateData[key] = value;
+        return true;
+    }
+
+    public bool TryGetStateDataValue(string key, out string value)
+    {
+        return _stateData.TryGetValue(key, out value);
     }
 }

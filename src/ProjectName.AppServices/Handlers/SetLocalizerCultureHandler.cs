@@ -4,7 +4,7 @@ using Telegram.Bot.Types;
 
 namespace ProjectName.AppServices.Handlers;
 
-public sealed class SetLocalizerCultureHandler : IUpdateHandler
+public  class SetLocalizerCultureHandler : IUpdateHandler
 {
     public Task Handle(Update update, CancellationToken cancellationToken = default)
     {

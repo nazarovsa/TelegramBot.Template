@@ -4,7 +4,8 @@ using Insight.TelegramBot.DependencyInjection.Polling;
 using Insight.TelegramBot.Handling.Infrastructure;
 using Insight.TelegramBot.Polling.ExceptionHandlers;
 using ProjectName.AppServices;
-using ProjectName.AppServices.Handlers.Messages.StartMessage;
+using ProjectName.AppServices.UseCases.Start.StartMessage;
+using ProjectName.AppServices.UseCases.Start.StartMessage.StartMessage;
 using ProjectName.Persistence;
 using ProjectName.Persistence.Infrastructure;
 

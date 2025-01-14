@@ -12,6 +12,7 @@ public static class ServiceCollectionExtensions
         if (services == null) 
             throw new ArgumentNullException(nameof(services));
 
+        services.AddScoped<IUpdateHandler, InitializeOrUpdateUserHandler>();
         services.AddScoped<IUpdateHandler, SetLocalizerCultureHandler>();
         
         return services;

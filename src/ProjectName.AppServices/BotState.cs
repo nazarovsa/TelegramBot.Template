@@ -4,7 +4,9 @@ public enum BotState
 {
     // States
     Start = 1,
-    
+
     // Commands
 
+    ViewSettings,
+    ToggleLanguage
 }

@@ -29,7 +29,7 @@ public class DesignTimeDbContextFactory : IDesignTimeDbContextFactory<ProjectNam
             throw new InvalidOperationException($"ConnectionString for environment `{environment}` not found");
 
         optionsBuilder.UseMySql(connectionString, new MariaDbServerVersion(MariaDbServerVersion.LatestSupportedServerVersion),
-            builder => builder.MigrationsAssembly("CodeReviewBot.Migrator"));
+            builder => builder.MigrationsAssembly("ProjectName.Persistence"));
 
         return new ProjectNameDbContext(optionsBuilder.Options);
     }

@@ -229,3 +229,5 @@ Thumbs.db
 /**/**/appsettings.protected.json
 
 **/**/deployment.yml
+
+codebase.md

@@ -6,7 +6,7 @@ using Telegram.Bot.Types.Enums;
 
 namespace ProjectName.AppServices.Handlers;
 
-public sealed class InitializeOrUpdateUserHandler : IUpdateHandler
+public class InitializeOrUpdateUserHandler : IUpdateHandler
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly TimeProvider _timeProvider;
@@ -24,7 +24,12 @@ public sealed class InitializeOrUpdateUserHandler : IUpdateHandler
         var utcNow = _timeProvider.GetUtcNow();
         if (user == null)
         {
-            user = UserAggregate.Initialize(tgUser.Id, tgUser.FirstName, utcNow, tgUser.Username);
+            var culture = tgUser.LanguageCode != null
+                          && tgUser.LanguageCode.Equals("ru", StringComparison.OrdinalIgnoreCase)
+                ? "ru"
+                : "en";
+
+            user = UserAggregate.Initialize(tgUser.Id, tgUser.FirstName, utcNow, culture, tgUser.Username);
             _unitOfWork.UsersRepository.Create(user);
             await _unitOfWork.CommitAsync(cancellationToken);
             return;
@@ -32,7 +37,7 @@ public sealed class InitializeOrUpdateUserHandler : IUpdateHandler
 
         user.Update(tgUser.FirstName, utcNow, tgUser.Username);
         user.UpdateLastActivityAt(utcNow);
-        
+
         _unitOfWork.UsersRepository.Update(user);
         await _unitOfWork.CommitAsync(cancellationToken);
     }
@@ -45,28 +50,6 @@ public sealed class InitializeOrUpdateUserHandler : IUpdateHandler
                 return update.Message!.From;
             case UpdateType.CallbackQuery:
                 return update.CallbackQuery!.From;
-            case UpdateType.Unknown:
-            case UpdateType.InlineQuery:
-            case UpdateType.ChosenInlineResult:
-            case UpdateType.EditedMessage:
-            case UpdateType.ChannelPost:
-            case UpdateType.EditedChannelPost:
-            case UpdateType.ShippingQuery:
-            case UpdateType.PreCheckoutQuery:
-            case UpdateType.Poll:
-            case UpdateType.PollAnswer:
-            case UpdateType.MyChatMember:
-            case UpdateType.ChatMember:
-            case UpdateType.ChatJoinRequest:
-            case UpdateType.MessageReaction:
-            case UpdateType.MessageReactionCount:
-            case UpdateType.ChatBoost:
-            case UpdateType.RemovedChatBoost:
-            case UpdateType.BusinessConnection:
-            case UpdateType.BusinessMessage:
-            case UpdateType.EditedBusinessMessage:
-            case UpdateType.DeletedBusinessMessages:
-            case UpdateType.PurchasedPaidMedia:
             default:
                 throw new ArgumentOutOfRangeException(nameof(Update.Type));
         }

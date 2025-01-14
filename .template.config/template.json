@@ -23,6 +23,11 @@
       "isRequired": true,
       "replaces": "ProjectNameInKebab"
     },
+    "dbName": {
+      "type": "parameter",
+      "isRequired": true,
+      "replaces": "DB_NAME"
+    },
     "telegramBotToken": {
       "type": "paramater",
       "isRequired": false,

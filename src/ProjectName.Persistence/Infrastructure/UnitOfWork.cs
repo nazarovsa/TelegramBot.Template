@@ -3,7 +3,7 @@ using ProjectName.Domain.Users;
 
 namespace ProjectName.Persistence.Infrastructure;
 
-public sealed class UnitOfWork : IUnitOfWork
+public  class UnitOfWork : IUnitOfWork
 {
     private readonly ProjectNameDbContext _context;
     

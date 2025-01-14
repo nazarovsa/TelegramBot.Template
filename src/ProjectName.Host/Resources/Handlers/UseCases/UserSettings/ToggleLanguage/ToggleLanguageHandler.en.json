@@ -1,0 +1,4 @@
+{
+  "LanguageChanged": "✅ Language successfully changed to {Culture}\n\nAll bot messages will now be shown in your selected language.",
+  "LanguageChangeError": "❌ Failed to change language. Please try again."
+}
