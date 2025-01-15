@@ -1,0 +1,6 @@
+{
+  "TimezoneUpdated": "✅ Your timezone has been successfully updated to UTC{Timezone:+#;-#;+0}",
+  "InvalidFormat": "❌ Invalid format. Please enter a number (examples: 3, -5, 0).",
+  "InvalidRange": "❌ Invalid timezone. Please enter a number between -12 and +14.",
+  "Error": "❌ An error occurred while updating your timezone. Please try again."
+}

@@ -1,0 +1,3 @@
+{
+  "SetTimezoneAwaitingText": "Please enter your timezone offset (a number between -12 and +14).\n\nExamples:\n3 for UTC+3\n-5 for UTC-5\n0 for UTC"
+}

@@ -1,31 +1,34 @@
-using FormatWith;
 using Insight.Localizer;
 using Insight.TelegramBot.Handling.Handlers;
 using Insight.TelegramBot.Models;
 using Microsoft.Extensions.Logging;
-using ProjectName.AppServices;
 using ProjectName.AppServices.Extensions;
 using ProjectName.AppServices.Handlers;
-using ProjectName.AppServices.UseCases.UserSettings.ViewSettings;
 using ProjectName.Domain;
+using ProjectName.Domain.Users;
 using Telegram.Bot;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.ReplyMarkups;
 
-public class ViewSettingsHandler : ContextHandlerBase, IMatchingUpdateHandler<ViewSettingsMatcher>
+namespace ProjectName.AppServices.UseCases.SetUserTimezone;
+
+public class SetTimezoneHandler : ContextHandlerBase, IMatchingUpdateHandler<SetTimezoneMatcher>
 {
     private readonly ITelegramBotClient _botClient;
     private readonly ILocalizer _localizer;
-    private readonly ILogger<ViewSettingsHandler> _logger;
+    private readonly TimeProvider _timeProvider;
+    private readonly ILogger<SetTimezoneHandler> _logger;
 
-    public ViewSettingsHandler(
+    public SetTimezoneHandler(
         ITelegramBotClient botClient,
         ILocalizer localizer,
         IUnitOfWork unitOfWork,
-        ILogger<ViewSettingsHandler> logger) : base(unitOfWork)
+        TimeProvider timeProvider,
+        ILogger<SetTimezoneHandler> logger) : base(unitOfWork)
     {
         _botClient = botClient;
         _localizer = localizer;
+        _timeProvider = timeProvider;
         _logger = logger;
     }
 
@@ -34,30 +37,17 @@ public class ViewSettingsHandler : ContextHandlerBase, IMatchingUpdateHandler<Vi
         await SetUserContext(update.CallbackQuery.From.Id, cancellationToken);
         Localizer.CurrentCulture = User.Culture;
 
-        var (toggleToKey, toggleToArg) = User.Culture.Equals("ru")
-            ? ("ToggleToEnglishButton", "en")
-            : ("ToggleToRussianButton", "ru");
-
-        var toggleToText = _localizer.Get(nameof(ViewSettingsHandler), toggleToKey);
+        User.UpdateState(UserState.SetTimezoneAwaiting, _timeProvider.GetUtcNow());
+        await UnitOfWork.CommitAsync(cancellationToken);
 
         var message = new TextMessage(update.CallbackQuery.Message!.Chat.Id)
         {
-            Text = _localizer.Get(nameof(ViewSettingsHandler), "SettingsMessage"),
+            Text = _localizer.Get(nameof(SetTimezoneHandler), "SetTimezoneAwaitingText"),
             ReplyMarkup = new InlineKeyboardMarkup([
                 [
                     InlineKeyboardButton.WithCallbackData(
-                        toggleToText, new BotData(BotState.ToggleLanguage, toggleToArg))
-                ],
-                [
-                    InlineKeyboardButton.WithCallbackData(
-                        _localizer.Get(nameof(ViewSettingsHandler), "SetTimezoneButton")
-                            .FormatWith(new { User.Timezone }),
-                        new BotData(BotState.SetTimezone))
-                ],
-                [
-                    InlineKeyboardButton.WithCallbackData(
                         _localizer.GetBackButtonText(),
-                        BotData.Start())
+                        new BotData(BotState.ViewSettings))
                 ]
             ])
         };

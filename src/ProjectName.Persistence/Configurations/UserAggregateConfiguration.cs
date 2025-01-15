@@ -29,6 +29,10 @@ public class UserAggregateConfiguration : IEntityTypeConfiguration<UserAggregate
             .HasDefaultValue("en")
             .HasMaxLength(2);
 
+        builder.Property(x => x.Timezone)
+            .HasColumnName("timezone")
+            .IsRequired();
+
         builder.Property(x => x.State)
             .HasColumnName("state")
             .HasColumnType("int");

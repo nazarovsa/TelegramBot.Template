@@ -1,5 +1,6 @@
 {
   "SettingsMessage": "⚙️ Настройки\n\nЗдесь вы можете настроить работу бота.",
+  "SetTimezoneButton": "🕛 Изменить часовой пояс (UTC{Timezone:+#;-#;+0})",
   "ToggleToEnglishButton": "🇬🇧 Английский",
   "ToggleToRussianButton": "🇷🇺 Русский"
 }

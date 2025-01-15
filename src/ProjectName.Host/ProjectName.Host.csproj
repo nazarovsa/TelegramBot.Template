@@ -26,10 +26,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Resources\Handlers\UseCases\UserSettings\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <_ContentIncludedByDefault Remove="Resources\Handlers\UseCases\ToggleLanguage\ToggleLanguageHandler.en.json" />
       <_ContentIncludedByDefault Remove="Resources\Handlers\UseCases\ToggleLanguage\ToggleLanguageHandler.ru.json" />
     </ItemGroup>

@@ -1,5 +1,6 @@
 {
   "SettingsMessage": "⚙️ Settings\n\nHere you can customize your bot experience.",
+  "SetTimezoneButton": "🕛 Set timezone (UTC{Timezone:+#;-#;+0})",
   "ToggleToEnglishButton": "🇬🇧 English",
   "ToggleToRussianButton": "🇷🇺 Russian"
 }

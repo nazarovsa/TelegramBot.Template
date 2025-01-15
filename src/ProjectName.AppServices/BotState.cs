@@ -8,5 +8,6 @@ public enum BotState
     // Commands
 
     ViewSettings,
-    ToggleLanguage
+    ToggleLanguage,
+    SetTimezone
 }
